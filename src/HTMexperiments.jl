@@ -1,5 +1,5 @@
 module HTMexperiments
 
-# Write your package code here.
+include("metrics.jl")
 
 end

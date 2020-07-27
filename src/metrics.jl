@@ -1,7 +1,7 @@
 #using ..HierarchicalTemporalMemory
 #using Random
-#import Lazy: @>
-#import Parameters: @unpack
+import Lazy: @>
+using UnPack
 
 excludedim(a, dim)= (a[1:dim-1],a[dim+1:end])
 
@@ -56,3 +56,14 @@ noiserobustness(sp::SpatialPooler; trials=12)= begin
   end
   mapreduce(trial, +, 1:trials)/trials
 end
+
+"""
+`stabilitySP(aᵢ,paᵢ)` given a vector `aᵢ` of SP activations for a set of test inputs at
+time j, and the activations on the same set of test inputs at a previous time k `paᵢ`,
+shows a metric of how much the SP's response has changed from training.
+`aᵢ` dims: {activation, samples}
+"""
+stabilitySP(aᵢ,paᵢ)=
+  mapreduce(+, 1:size(aᵢ,2)) do i
+    @views count(aᵢ[:,i] .& paᵢ[:,i]) / count(paᵢ[:,i])
+  end / size(aᵢ,2)
