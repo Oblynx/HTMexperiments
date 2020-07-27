@@ -1,8 +1,3 @@
-#using ..HierarchicalTemporalMemory
-#using Random
-import Lazy: @>
-using UnPack
-
 excludedim(a, dim)= (a[1:dim-1],a[dim+1:end])
 
 # takes SP activations in 1 timestep
