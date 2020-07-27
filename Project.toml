@@ -3,6 +3,9 @@ uuid = "572eed0f-bd0e-4a40-96dc-834fbc43113b"
 authors = ["Konstantinos Samaras-Tsakiris <ksamtsak@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+HierarchicalTemporalMemory = "db654dba-670c-566a-9226-64313b881ded"
+
 [compat]
 julia = "1"
 
