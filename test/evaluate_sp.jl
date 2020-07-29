@@ -124,4 +124,4 @@ g["activation freq"]= plot(histogram(aFreq[:,1], title="epoch 0"),
 m|> display
 layout= @layout [a{.30w} b{.1w} grid(2,1){.1w} [e; f]]
 g["SP metrics"]= plot(g["data"],g["sparsity"],g["entropy"],g["noisemetric"], g["activation freq"], g["noisecurves"], layout=layout)
-savefig(g["SP metrics"], "sp_metrics.svg")
+savefig(g["SP metrics"], "results/sp_metrics.svg")
