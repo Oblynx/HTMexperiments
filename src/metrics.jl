@@ -10,7 +10,7 @@ sparseness(aᵢ)= count(aᵢ)/length(aᵢ)
 entropySP(aₜᵢ; tdim=1)= begin
   # should take a vector in time foreach minicolumn
   entropy_lim(aₜ)= aₜ ≈ 0 ? 0.0 :
-    aₜ ≈ 1 ? 1.0 : entropyf(aₜ)
+    aₜ ≈ 1 ? 0.0 : entropyf(aₜ)
   # aₜᵢ:= (t,i,j,...)
   # @view aₜᵢ[:,i,j,...]
   c= Iterators.product((excludedim(size(aₜᵢ), tdim).|> CartesianIndices)...)
@@ -36,20 +36,31 @@ addnoise(sdr,k)= begin
   @> sdr copy flip!(act) flip!(inact)
 end
 
-noiserobustness(sp::SpatialPooler; trials=12)= begin
+"""
+`(metric, changeCurve) = noiserobustness(sp::SpatialPooler, data; trials=15)` runs repeated experiments on the SP
+with increasingly distorted stimuli to gauge the noise robustness.
+"""
+noiserobustness(sp::SpatialPooler, data; trials=10)= begin
   @unpack szᵢₙ = sp.params
-  k_step= 20
+  zⁿ(z,k)= addnoise(z,k)
+  aⁿ(z,k)= sp(zⁿ(z,k))
+  k_step= 40; sampleSize= floor(Int,size(data,2)/trials)
+  changeWithNoise= zeros(k_step+1,trials)
+  sampleIdx= randperm(size(data,2))
   trial(i)= begin
-    z= bitrand(szᵢₙ)
-    zⁿ(k)= addnoise(z,k)
-    a= sp(z)
-    aⁿ(k)= sp(zⁿ(k))
+    zset= data[:,sampleIdx[(i-1)*sampleSize+1 : i*sampleSize]]
     # ∫{0..1} f(k)dk
-    mapreduce(+, 0:1/k_step:1) do k
-      count(a .& aⁿ(k)) / count(a)
-    end / k_step
+    mapreduce(+, enumerate(0:1/k_step:1)) do (kᵢ,k)
+      changeWithNoise[kᵢ,i]= mapreduce(+, 1:sampleSize) do s
+        z= zset[:,s]; a= sp(z)
+        count(a .& aⁿ(z,k)) / count(a)
+      end / sampleSize
+      changeWithNoise[kᵢ,i]
+    end / (k_step+1)
   end
-  mapreduce(trial, +, 1:trials)/trials
+  result= map(trial, 1:trials)
+  mapslices(mean,changeWithNoise,dims=[2])
+  (result, changeWithNoise[:,1])
 end
 
 """

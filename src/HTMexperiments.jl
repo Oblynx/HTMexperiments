@@ -1,7 +1,7 @@
 module HTMexperiments
 
 using HierarchicalTemporalMemory
-using Random
+using Random, Statistics
 import Lazy: @>
 using UnPack
 

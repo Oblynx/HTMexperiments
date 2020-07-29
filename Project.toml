@@ -4,18 +4,22 @@ authors = ["Konstantinos Samaras-Tsakiris <ksamtsak@gmail.com> and contributors"
 version = "0.1.0"
 
 [deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 HierarchicalTemporalMemory = "db654dba-670c-566a-9226-64313b881ded"
+HypothesisTests = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
 Lazy = "50d2b5c4-7a5e-59d5-8109-a42b560f39c0"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
 UnPack = "3a884ed6-31ef-47d7-9d2a-63182c4928ed"
 
 [compat]
 julia = "1.4"
 
 [extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test", "CSV", "Plots"]
