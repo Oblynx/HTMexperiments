@@ -6,7 +6,7 @@ import Lazy: @>
 using UnPack
 
 include("metrics.jl")
-export sparseness, entropySP, noiserobustness, stabilitySP
+export sparseness, entropy, noiserobustness, stabilitySP
 include("makedata.jl")
 export randomSDR
 
